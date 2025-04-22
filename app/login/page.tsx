@@ -100,7 +100,7 @@ c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.
               </div>
             </div>
             <div>
-              <form noValidate="" className="mb-4">
+              <form className="mb-4">
                 <div className="grid gap-2">
                   <div className="grid gap-1">
                     <label className="text-white" htmlFor="email">
