@@ -1,5 +1,6 @@
 "use client";
 
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -7,14 +8,24 @@ export default function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Dummy auth logic
-    if (username === "admin" && password === "admin") {
-      router.push("/");
-    } else {
-      alert("Invalid credentials");
+
+    try {
+      const res = await axios.post("/api/login", {
+        username,
+        password,
+      });
+
+      if (res.data.success) {
+        router.push("/");
+      } else {
+        setError("Invalid credentials");
+      }
+    } catch (err: any) {
+      setError("Invalid credentials");
     }
   };
 
@@ -100,21 +111,23 @@ c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.
               </div>
             </div>
             <div>
-              <form className="mb-4">
+              <form className="mb-4" onSubmit={handleLogin}>
                 <div className="grid gap-2">
                   <div className="grid gap-1">
-                    <label className="text-white" htmlFor="email">
+                    <label className="text-white" htmlFor="username">
                       Email
                     </label>
                     <input
                       className="mr-2.5 mb-2 h-full min-h-[44px] w-full rounded-lg border bg-zinc-950 text-white border-zinc-800 px-4 py-3 text-sm font-medium placeholder:text-zinc-400 focus:outline-0 dark:border-zinc-800 dark:bg-transparent dark:text-white dark:placeholder:text-zinc-400"
-                      id="email"
-                      placeholder="name@example.com"
-                      type="email"
+                      id="username"
+                      placeholder="Username"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      required
+                      type="text"
                       autoCapitalize="none"
-                      autoComplete="email"
                       autoCorrect="off"
-                      name="email"
+                      name="username"
                     />
                     <label
                       className="text-zinc-950 mt-2 dark:text-white"
@@ -125,12 +138,18 @@ c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.
                     <input
                       id="password"
                       placeholder="Password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                       type="password"
                       autoComplete="current-password"
                       className="mr-2.5 mb-2 h-full min-h-[44px] w-full rounded-lg border bg-zinc-950 text-white border-zinc-800 px-4 py-3 text-sm font-medium placeholder:text-zinc-400 focus:outline-0 dark:border-zinc-800 dark:bg-transparent dark:text-white dark:placeholder:text-zinc-400"
                       name="password"
                     />
                   </div>
+                  {error && (
+                    <p className="text-red-500 text-sm mb-4">{error}</p>
+                  )}
                   <button
                     className="whitespace-nowrap ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-white text-zinc-950 hover:bg-white/90 active:bg-white/80 flex w-full max-w-full mt-6 items-center justify-center rounded-lg px-4 py-4 text-base font-medium"
                     type="submit"
