@@ -44,6 +44,12 @@ export default function LoginPage() {
             <p className="font-medium">Email: {session.user?.email}</p>
           </div>
         </div>
+        <button
+          onClick={() => signOut({ callbackUrl: "/login" })}
+          className="mt-4 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded transition-all"
+        >
+          Sign Out
+        </button>
       </div>
     );
   }
