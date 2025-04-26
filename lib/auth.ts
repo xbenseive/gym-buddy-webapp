@@ -1,0 +1,13 @@
+import jwt from "jsonwebtoken";
+
+const JWT_SECRET =
+  process.env.JWT_SECRET ||
+  "4ff4a268323decf499ee587d48fd0daa4aec0271f5332a097aae3318e9ea061a8f887ae9cb86c6ec435f2e2fad2ddff53a6e00671cb00791f4b570937e388a9a8bad0130da0b5cbeaf2a424ecfd5a4779419be3b1b9c13d3306b5d6355b7333f28167f19833af9652660d66e89691f819acb8b674fe3fe54dbe901355b2383921f581a8caeec48e5acf738d6e1c603267b545cd9613f9305554261d4ff24fa2f7e21bd283f40f9f42a7602aec05612c3e6e4f72ca0ac10cf65cf6b4706cb82a3a8bafd1fd66a411548efd78ee03dc7bf759da6ddab2795f51f3fb2d1fafbdbd0f9412e62c806896c68395f26f2e9d5e9da737c09fe3f486f3ef4fa48a5a6a1ad";
+
+export function generateToken(payload: object) {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn: "7d" });
+}
+
+export function verifyToken(token: string) {
+  return jwt.verify(token, JWT_SECRET);
+}

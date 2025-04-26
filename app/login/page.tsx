@@ -7,19 +7,19 @@ import { useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const { data: session } = useSession();
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/login", {
-        username,
+      const res = await axios.post("/api/auth/login", {
+        email,
         password,
       });
 
-      if (res.data.success) {
+      if (res.status === 200) {
         router.push("/");
       } else {
         setError("Invalid credentials");
@@ -136,20 +136,20 @@ c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.
               <form className="mb-4" onSubmit={handleLogin}>
                 <div className="grid gap-2">
                   <div className="grid gap-1">
-                    <label className="text-white" htmlFor="username">
+                    <label className="text-white" htmlFor="email">
                       Email
                     </label>
                     <input
                       className="mr-2.5 mb-2 h-full min-h-[44px] w-full rounded-lg border bg-zinc-950 text-white border-zinc-800 px-4 py-3 text-sm font-medium placeholder:text-zinc-400 focus:outline-0 dark:border-zinc-800 dark:bg-transparent dark:text-white dark:placeholder:text-zinc-400"
-                      id="username"
-                      placeholder="Username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
+                      id="email"
+                      placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       required
-                      type="text"
+                      type="email"
                       autoCapitalize="none"
                       autoCorrect="off"
-                      name="username"
+                      name="email"
                     />
                     <label
                       className="text-zinc-950 mt-2 dark:text-white"
